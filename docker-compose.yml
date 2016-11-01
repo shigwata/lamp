@@ -1,0 +1,33 @@
+version: '2'
+services:
+  my-db:
+    image: mysql:5.7.14
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+    volumes:
+      - "db:/var/lib/mysql"
+
+  my-php:
+    build: ./php
+    ports:
+      - "8180:80"
+    volumes:
+      - ./html:/var/www/html
+    depends_on:
+      - my-db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.6.4-1
+    ports:
+      - "8181:80"
+    depends_on:
+      - my-db
+    environment:
+      PMA_HOST: my-db
+
+volumes:
+  db:
