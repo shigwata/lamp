@@ -12,7 +12,7 @@ services:
       - "db:/var/lib/mysql"
 
   my-php:
-    build: ./php
+    image: shigwata/php-ja
     ports:
       - "8180:80"
     volumes:
